@@ -87,7 +87,7 @@ const CatFact = () => {
 					onMouseOver={handleMouseOver}
 					onMouseOut={handleMouseOut}
 				>
-					<Stack direction="column" justifyContent="center" data-testid='cat-fact-card'>
+					<Stack direction="column" justifyContent="center">
 						<Typography variant="h5" textAlign="center">
 							{catFact}
 						</Typography>
