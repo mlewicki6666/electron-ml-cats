@@ -4,8 +4,7 @@ import { FAVOURITES } from "../utils/constants";
 type UseLocalStorageReturnType = {
 	favorites: string[];
 	saveFavourite: (catFact: string) => void;
-    removeFavourite: (catFact: string) => void;
-
+	removeFavourite: (catFact: string) => void;
 };
 
 const useLocalStorage = (): UseLocalStorageReturnType => {

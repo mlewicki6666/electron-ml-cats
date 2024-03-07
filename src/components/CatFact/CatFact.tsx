@@ -15,8 +15,8 @@ import {
 	DEFAULT_NOTIFICATION_INTERVAL,
 	CONVERT_TO_MINUTES,
 } from "../../utils/constants";
-import useFetchCatFact from "../../hooks/useFetchCatFact";
 import useFavourites from "../../hooks/useFavourites";
+import { useCatFactContext } from "../../context/CatFactProvider";
 
 export const CustomCard = styled(Card)<CardProps>(() => ({
 	display: "flex",
@@ -31,8 +31,8 @@ const CatFact = () => {
 		DEFAULT_NOTIFICATION_INTERVAL
 	);
 	const [snackbarOpen, setSnackbarOpen] = useState(false);
-	const { catFact, error, loading, fetchCatFact } = useFetchCatFact();
 	const { saveFavourite, removeFavourite } = useFavourites();
+	const { catFact, error, loading, fetchCatFact } = useCatFactContext();
 
 	const addFavourites = () => {
 		saveFavourite(catFact);
@@ -79,9 +79,7 @@ const CatFact = () => {
 		<>
 			<Typography variant="h2">Cat Fact:</Typography>
 			{loading ? (
-				<Typography variant="body1">
-					Loading
-				</Typography>
+				<Typography variant="h4" textAlign="center">Loading</Typography>
 			) : (
 				<CustomCard
 					onMouseOver={handleMouseOver}

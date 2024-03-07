@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import CatFact from "./CatFact";
+import { CatFactProvider } from "../../context/CatFactProvider";
 import "@testing-library/jest-dom";
 
 jest.mock("../../hooks/useFavourites", () => ({
@@ -10,27 +11,22 @@ jest.mock("../../hooks/useFavourites", () => ({
 	})),
 }));
 
-jest.mock("../../hooks/useFetchCatFact", () => ({
-	__esModule: true,
-	default: jest.fn(() => ({
-		catFact: "Test Cat Fact",
-		error: null,
-		loading: false,
-		fetchCatFact: jest.fn(),
-	})),
-}));
-
 describe("CatFact component", () => {
-	it("renders CatFact component with the correct title", () => {
-		render(<CatFact />);
-		const titleElement = screen.getByRole("heading", { level: 2 });
-		expect(titleElement).toBeInTheDocument();
-		expect(titleElement).toHaveTextContent("Cat Fact:");
-	});
+	it("renders cat fact correctly", async () => {
+		render(
+			<CatFactProvider>
+				<CatFact />
+			</CatFactProvider>
+		);
 
-	it("renders cat fact when not loading", () => {
-		render(<CatFact />);
-		const catFactText = screen.getByText("Test Cat Fact");
-		expect(catFactText).toBeInTheDocument();
+		expect(screen.getByText(/loading/i)).toBeInTheDocument();
+
+		expect(
+			screen.queryByText(/error while getting cat data/i)
+		).not.toBeInTheDocument();
+
+		await waitFor(() => {
+			expect(screen.getByText(/cat fact/i)).toBeInTheDocument();
+		});
 	});
 });
