@@ -3,15 +3,14 @@ import { CustomCard } from "../CatFact/CatFact";
 import useFavourites from "../../hooks/useFavourites";
 
 const Favourites = () => {
-	const{ favorites } = useFavourites();
-
+	const { favorites } = useFavourites();
 
 	return (
 		<div>
 			<Typography variant="h2">Favourites</Typography>
 			{favorites.length ? (
 				favorites.map((element, index) => (
-					<CustomCard key={index}>
+					<CustomCard key={index} data-testid="favourite-card">
 						<Typography variant="h5" justifyContent="center">
 							{element}
 						</Typography>

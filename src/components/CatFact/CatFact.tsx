@@ -79,13 +79,15 @@ const CatFact = () => {
 		<>
 			<Typography variant="h2">Cat Fact:</Typography>
 			{loading ? (
-				<Typography variant="body1">Loading</Typography>
+				<Typography variant="body1">
+					Loading
+				</Typography>
 			) : (
 				<CustomCard
 					onMouseOver={handleMouseOver}
 					onMouseOut={handleMouseOut}
 				>
-					<Stack direction="column" justifyContent="center">
+					<Stack direction="column" justifyContent="center" data-testid='cat-fact-card'>
 						<Typography variant="h5" textAlign="center">
 							{catFact}
 						</Typography>
