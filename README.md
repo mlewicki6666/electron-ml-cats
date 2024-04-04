@@ -3,7 +3,7 @@
 ### Description
 
 App was done as a technical skill review using Electron JS, React JS and React Testing Library. UI is very minimalistic, I spent as much time trying to improve the app technically. 
-To run the App create a `.env` file and fill it with base API url (https://cat-fact.herokuapp.com). Template file is also added to the repo. 
+To run the App create a `.env` file and fill it with the base API URL (https://cat-fact.herokuapp.com). The template file is also added to the repo. 
 
 ## Technologies
 
@@ -43,5 +43,4 @@ npm run make
 - Add more complex testing
 - Improve UI
 - Add more typing and generally improve it
-- Add error handling
 
