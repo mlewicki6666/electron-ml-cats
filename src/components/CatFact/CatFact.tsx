@@ -1,128 +1,52 @@
 import { useState, useEffect } from "react";
-import {
-	Button,
-	Card,
-	CardProps,
-	InputLabel,
-	MenuItem,
-	Select,
-	Snackbar,
-	Stack,
-	Typography,
-	styled,
-} from "@mui/material";
+import { SelectChangeEvent, Snackbar, Typography } from "@mui/material";
 import {
 	DEFAULT_NOTIFICATION_INTERVAL,
 	CONVERT_TO_MINUTES,
 } from "../../utils/constants";
-import useFavourites from "../../hooks/useFavourites";
-import { useCatFactContext } from "../../context/CatFactProvider";
-
-export const CustomCard = styled(Card)<CardProps>(() => ({
-	display: "flex",
-	justifyContent: "center",
-	padding: 32,
-	marginBottom: 5,
-}));
+import NotificationFrequency from "../NotificationFrequency/NotificationFrequency";
+import CatCard from "../CatCard/CatCard";
+import useCatFactContext from "../../hooks/useCatFactContext";
 
 const CatFact = () => {
-	const [mouseOver, setMouseOver] = useState(false);
 	const [notificationInterval, setNotificationInterval] = useState(
 		DEFAULT_NOTIFICATION_INTERVAL
 	);
 	const [snackbarOpen, setSnackbarOpen] = useState(false);
-	const { saveFavourite, removeFavourite } = useFavourites();
-	const { catFact, error, loading, fetchCatFact } = useCatFactContext();
-
-	const addFavourites = () => {
-		saveFavourite(catFact);
-		fetchCatFact();
-	};
-
-	const removeFavourites = () => {
-		removeFavourite(catFact);
-		fetchCatFact();
-	};
-
-	const handleIntervalChange = (event: any) => {
-		setNotificationInterval(event.target.value);
+	const { loading, fetchCatFact } = useCatFactContext();
+	const handleIntervalChange = (e: SelectChangeEvent) => {
+		setNotificationInterval(e.target.value);
 	};
 
 	const handleSnackbarClose = () => {
 		setSnackbarOpen(false);
 	};
 
-	const handleMouseOver = () => {
-		setMouseOver(true);
-	};
-	const handleMouseOut = () => {
-		setMouseOver(false);
-	};
-
 	useEffect(() => {
 		const intervalId = setInterval(() => {
 			fetchCatFact();
-		}, notificationInterval * CONVERT_TO_MINUTES);
+		}, Number(notificationInterval) * CONVERT_TO_MINUTES);
 
 		return () => {
 			clearInterval(intervalId);
 		};
 	}, [notificationInterval]);
 
-	if (error) {
-		return (
-			<Typography variant="h2">Error while getting cat data.</Typography>
-		);
-	}
-
 	return (
 		<>
 			<Typography variant="h2">Cat Fact:</Typography>
 			{loading ? (
-				<Typography variant="h4" textAlign="center">Loading</Typography>
+				<Typography variant="body1" textAlign="center">
+					Loading
+				</Typography>
 			) : (
-				<CustomCard
-					onMouseOver={handleMouseOver}
-					onMouseOut={handleMouseOut}
-				>
-					<Stack direction="column" justifyContent="center">
-						<Typography variant="h5" textAlign="center">
-							{catFact}
-						</Typography>
-						{mouseOver && (
-							<Stack
-								direction="row"
-								justifyContent="space-between"
-								p={2}
-							>
-								<Button onClick={addFavourites}>
-									Add to Favourites
-								</Button>
-								<Button onClick={removeFavourites}>
-									Remove from Favourites
-								</Button>
-							</Stack>
-						)}
-					</Stack>
-				</CustomCard>
+				<CatCard />
 			)}
 
-			<InputLabel id="notification-frequency-label">
-				Notification frequency
-			</InputLabel>
-			<Select
-				labelId="notification-frequency-label"
-				id="notification-frequency"
-				value={notificationInterval}
-				label="Frequency"
-				onChange={handleIntervalChange}
-			>
-				<MenuItem value={DEFAULT_NOTIFICATION_INTERVAL}>
-					Minute
-				</MenuItem>
-				<MenuItem value={5}>5 minutes</MenuItem>
-				<MenuItem value={30}>Half hour</MenuItem>
-			</Select>
+			<NotificationFrequency
+				notificationInterval={notificationInterval}
+				handleIntervalChange={handleIntervalChange}
+			/>
 
 			<Snackbar
 				autoHideDuration={5000}

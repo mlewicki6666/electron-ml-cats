@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
-import { CustomCard } from "../CatFact/CatFact";
 import useFavourites from "../../hooks/useFavourites";
+import CustomCard from "../CatCard/CustomCard";
 
 const Favourites = () => {
 	const { favorites } = useFavourites();
@@ -11,13 +11,13 @@ const Favourites = () => {
 			{favorites.length ? (
 				favorites.map((element, index) => (
 					<CustomCard key={index} data-testid="favourite-card">
-						<Typography variant="h5" justifyContent="center">
+						<Typography variant="body1" justifyContent="center">
 							{element}
 						</Typography>
 					</CustomCard>
 				))
 			) : (
-				<Typography variant="h5" justifyContent="center">
+				<Typography variant="body1" justifyContent="center">
 					No elements in favourites
 				</Typography>
 			)}

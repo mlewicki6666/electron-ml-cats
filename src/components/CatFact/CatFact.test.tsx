@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import CatFact from "./CatFact";
 import { CatFactProvider } from "../../context/CatFactProvider";
 import "@testing-library/jest-dom";
@@ -12,6 +12,7 @@ jest.mock("../../hooks/useFavourites", () => ({
 }));
 
 describe("CatFact component", () => {
+	jest.useFakeTimers();
 	it("renders cat fact correctly", async () => {
 		render(
 			<CatFactProvider>
@@ -28,5 +29,16 @@ describe("CatFact component", () => {
 		await waitFor(() => {
 			expect(screen.getByText(/cat fact/i)).toBeInTheDocument();
 		});
+	});
+	it("displays notification frequency selector", () => {
+		render(
+			<CatFactProvider>
+				<CatFact />
+			</CatFactProvider>
+		);
+
+		expect(
+			screen.getByLabelText(/notification frequency/i)
+		).toBeInTheDocument();
 	});
 });

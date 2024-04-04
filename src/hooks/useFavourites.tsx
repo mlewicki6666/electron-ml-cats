@@ -9,12 +9,20 @@ type UseLocalStorageReturnType = {
 
 const useLocalStorage = (): UseLocalStorageReturnType => {
 	const [favorites, setFavorites] = useState<string[]>(() => {
-		const storedFavorites = localStorage.getItem(FAVOURITES);
-		return storedFavorites ? JSON.parse(storedFavorites) : [];
+		try {
+			const storedFavorites = localStorage.getItem(FAVOURITES);
+			return storedFavorites ? JSON.parse(storedFavorites) : [];
+		} catch (error) {
+			throw new Error(error);
+		}
 	});
 
 	const saveFavourite = (catFact: string) => {
 		setFavorites([...favorites, catFact]);
+		localStorage.setItem(
+			FAVOURITES,
+			JSON.stringify([...favorites, catFact])
+		);
 	};
 
 	const removeFavourite = (catFact: string) => {

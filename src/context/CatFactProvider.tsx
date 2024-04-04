@@ -1,6 +1,5 @@
 import {
 	createContext,
-	useContext,
 	ReactNode,
 	useState,
 	Dispatch,
@@ -37,6 +36,7 @@ const CatFactProvider = ({ children }: CatFactProviderProps) => {
 			setCatFact(response.data.text);
 		} catch (error) {
 			setError(error);
+			throw new Error(error);
 		} finally {
 			setLoading(false);
 		}
@@ -63,16 +63,4 @@ const CatFactProvider = ({ children }: CatFactProviderProps) => {
 	);
 };
 
-const useCatFactContext = () => {
-	const context = useContext(CatFactContext);
-
-	if (!context) {
-		throw new Error(
-			"useCatFactContext must be used within a CatFactProvider"
-		);
-	}
-    
-	return context;
-};
-
-export { CatFactContext, CatFactProvider, useCatFactContext };
+export { CatFactContext, CatFactProvider };
